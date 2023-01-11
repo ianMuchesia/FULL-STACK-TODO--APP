@@ -18,7 +18,7 @@ const Sidebar = () => {
   return (
     
       
-      <div className={`bg-[#1616ab] absolute top-0  w-[90%] h-full ml-0  z-[1] overflow-y-scroll    ${sideBar?"animate-slide-in duration-2000 ease-in-out ":"hidden"}`}>
+      <div className={`bg-[#525288] absolute top-0  w-[90%] h-full ml-0  z-[1] overflow-y-scroll    ${sideBar?"animate-slide-in duration-2000 ease-in-out ":"hidden"}`}>
         <div 
           className="flex items-center justify-between px-2 ">
         <h1 className="text-white">Categories</h1>
