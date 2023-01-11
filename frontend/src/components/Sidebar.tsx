@@ -16,11 +16,11 @@ const Sidebar = () => {
     setSideBar!(false)
   }
   return (
-    <div>
+    
       
-      <div className={`bg-[#1616ab] absolute top-0  w-[90%] h-full ml-0  z-[50] overflow-y-scroll  transition-height duration-75 ease-out ${sideBar?" ":"hidden"}`}>
+      <div className={`bg-[#525288] absolute top-0  w-[90%] h-full ml-0  z-[1] overflow-y-scroll    ${sideBar?"animate-slide-in duration-2000 ease-in-out ":"hidden"}`}>
         <div 
-          className="flex items-center justify-between px-2">
+          className="flex items-center justify-between px-2 ">
         <h1 className="text-white">Categories</h1>
       <span onClick={handleSideBar}><AiOutlineCloseCircle size={40}  color={`white`}/></span>
       </div>
@@ -57,7 +57,7 @@ const Sidebar = () => {
         </div>
       </div>
       </div>
-    </div>
+    
   );
 };
 
