@@ -7,7 +7,7 @@ const InputTask = () => {
       type="text"
       placeholder="Add Item"
       className="w-full placeholder-gray-200 bg-[#3c3c7a] border-none h-14 rounded-2xl  text-lg pl-4" />
-      <button className="absolute top-2 right-0  text-white rounded-full  bg-[#2563eb] border-none">
+      <button className="absolute top-2 right-0  text-white rounded-full  bg-[#2563eb] border-none animate-slide-fwd">
         <AiOutlinePlusCircle  size={40} color={``}/>
       </button>
     </form>
