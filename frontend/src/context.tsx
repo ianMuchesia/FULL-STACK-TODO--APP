@@ -17,12 +17,19 @@ interface AppContextType {
   alert: {
     error: string;
     status: boolean;
-}
-setAlert: React.Dispatch<React.SetStateAction<{
-  error: string;
-  status: boolean;
-}>>;
-handleCreateTask: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => Promise<void>;
+  };
+  setAlert: React.Dispatch<
+    React.SetStateAction<{
+      error: string;
+      status: boolean;
+    }>
+  >;
+  handleCreateTask: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => Promise<void>;
+  checked: boolean;
+  setChecked: React.Dispatch<React.SetStateAction<boolean>>;
+  handleDelete:(id: string) => Promise<void>;
 }
 
 const AppContext = React.createContext<AppContextType | undefined>(undefined);
@@ -44,29 +51,32 @@ const AppProvider: React.FC<Props> = ({ children }) => {
     setSideBar((prevState) => !prevState);
     console.log(sideBar);
   };
-  //fetch All tasks
-  const [tasks, setTasks] = useState<Task[]>([]);
+  //to trigger useEffect
+  const [refresh, setRefresh] = useState(false)
 
-  useEffect(() => {
-    let isMounted = true;
-    const fetchData = async () => {
-      try {
-        const { data } = await axios.get<{ tasks: Task[] }>(
-          "http://localhost:3000/api/v1/tasks"
-        );
+    //fetch All tasks
+    const [tasks, setTasks] = useState<Task[]>([]);
 
-        if (isMounted) {
-          setTasks(data.tasks);
+    useEffect(() => {
+      let isMounted = true;
+      const fetchData = async () => {
+        try {
+          const { data } = await axios.get<{ tasks: Task[] }>(
+            "http://localhost:3000/api/v1/tasks"
+          );
+  
+          if (isMounted) {
+            setTasks(data.tasks);
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+      };
+      fetchData();
+      return () => {
+        isMounted = false;
+      };
+    }, [tasks, refresh]);
 
   //to create a task
   const [createTask, setCreateTask] = useState("");
@@ -75,40 +85,56 @@ const AppProvider: React.FC<Props> = ({ children }) => {
 
   const [selectCategory, setSelectCategory] = useState("");
 
-  const [dueDate, setDueDate] = useState("")
+  const [dueDate, setDueDate] = useState("");
 
   const [alert, setAlert] = useState({
-    error:"",
-    status:false,
-  })
+    error: "",
+    status: false,
+  });
 
+  const reverseDate = (date: string) => {
+    const dateArr = date.split("/");
+    const formattedDate = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
+    return formattedDate;
+  };
 
-  
-  const handleCreateTask =async(e: React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
-    e.preventDefault()
-    if(dueDate.length<1){
-      setAlert({error:"please enter your date",status:true});
+  const handleCreateTask = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    if (dueDate.length < 1) {
+      setAlert({ error: "please enter your date", status: true });
       return;
     }
-   
-     
+
     try {
-      await axios.post(  "http://localhost:3000/api/v1/tasks", {
-        name:createTask,
-        category:selectCategory,
-        date:dueDate
+      await axios.post("http://localhost:3000/api/v1/tasks", {
+        name: createTask,
+        category: selectCategory,
+        date: reverseDate(dueDate),
+      });
+     setRefresh(prevState=>!prevState)
+    } catch (error) {
+      console.log(error);
+    }
+    setCreateTask("");
+    setDueDate("");
+    setAlert({ error: "", status: false });
+    setShowModal(false);
+  };
 
-      })
 
-      
+  //deleteTask
+  const handleDelete=async(id: string)=>{
+    try {
+      await axios.delete(`http://localhost:3000/api/v1/tasks/${id}`)
+      const filteredOut = tasks.filter(task=>task._id!==id)
+      setTasks(filteredOut)
     } catch (error) {
       console.log(error)
     }
-    setCreateTask("")
-    setDueDate("")
-    setAlert({error:"", status:false})
-    setShowModal(false)
   }
+
 
   //to change date format
   const changeDateFormat = (myDate: Date) => {
@@ -119,6 +145,10 @@ const AppProvider: React.FC<Props> = ({ children }) => {
     const formattedDate = `${day}/${month}/${year}`;
     return formattedDate;
   };
+
+  //checked and completed task
+
+  const [checked, setChecked] = useState(false);
   return (
     <AppContext.Provider
       value={{
@@ -133,7 +163,14 @@ const AppProvider: React.FC<Props> = ({ children }) => {
         setShowModal,
         selectCategory,
         setSelectCategory,
-        dueDate, setDueDate,alert, setAlert, handleCreateTask
+        dueDate,
+        setDueDate,
+        alert,
+        setAlert,
+        handleCreateTask,
+        checked,
+        setChecked,
+        handleDelete,
       }}
     >
       {children}
