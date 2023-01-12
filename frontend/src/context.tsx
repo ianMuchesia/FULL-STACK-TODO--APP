@@ -5,8 +5,24 @@ interface AppContextType {
   sideBar: Boolean;
   setSideBar: React.Dispatch<React.SetStateAction<boolean>>;
   tasks?: Task[];
-  changeDateFormat:(myDate: Date) => string;
+  changeDateFormat: (myDate: Date) => string;
+  createTask: string;
   setCreateTask: React.Dispatch<React.SetStateAction<string>>;
+  showModal: Boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  selectCategory: String;
+  setSelectCategory: React.Dispatch<React.SetStateAction<string>>;
+  dueDate: String;
+  setDueDate: React.Dispatch<React.SetStateAction<string>>;
+  alert: {
+    error: string;
+    status: boolean;
+}
+setAlert: React.Dispatch<React.SetStateAction<{
+  error: string;
+  status: boolean;
+}>>;
+handleCreateTask: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => Promise<void>;
 }
 
 const AppContext = React.createContext<AppContextType | undefined>(undefined);
@@ -53,7 +69,46 @@ const AppProvider: React.FC<Props> = ({ children }) => {
   }, []);
 
   //to create a task
-  const [createTask, setCreateTask] = useState("")
+  const [createTask, setCreateTask] = useState("");
+
+  const [showModal, setShowModal] = useState(false);
+
+  const [selectCategory, setSelectCategory] = useState("");
+
+  const [dueDate, setDueDate] = useState("")
+
+  const [alert, setAlert] = useState({
+    error:"",
+    status:false,
+  })
+
+
+  
+  const handleCreateTask =async(e: React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
+    e.preventDefault()
+    if(dueDate.length<1){
+      setAlert({error:"please enter your date",status:true});
+      return;
+    }
+   
+     
+    try {
+      await axios.post(  "http://localhost:3000/api/v1/tasks", {
+        name:createTask,
+        category:selectCategory,
+        date:dueDate
+
+      })
+
+      
+    } catch (error) {
+      console.log(error)
+    }
+    setCreateTask("")
+    setDueDate("")
+    setAlert({error:"", status:false})
+    setShowModal(false)
+  }
 
   //to change date format
   const changeDateFormat = (myDate: Date) => {
@@ -65,7 +120,22 @@ const AppProvider: React.FC<Props> = ({ children }) => {
     return formattedDate;
   };
   return (
-    <AppContext.Provider value={{ handleSideBar, sideBar, setSideBar, tasks, changeDateFormat, setCreateTask }}>
+    <AppContext.Provider
+      value={{
+        handleSideBar,
+        sideBar,
+        setSideBar,
+        tasks,
+        changeDateFormat,
+        createTask,
+        setCreateTask,
+        showModal,
+        setShowModal,
+        selectCategory,
+        setSelectCategory,
+        dueDate, setDueDate,alert, setAlert, handleCreateTask
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

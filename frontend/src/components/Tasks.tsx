@@ -6,9 +6,10 @@ const styles={
 }
 
 const Tasks = () => {
-  const {tasks, changeDateFormat}:any= useGlobalContext()
+  const {tasks, changeDateFormat}= useGlobalContext() || {}
+
   //incomplete task
-  const todo = tasks.filter((task: any)=>!task.complete)
+  const todo = tasks!.filter((task: any)=>!task.complete)
   
   return (
     <div className='mt-7 mx-4 '>
@@ -23,7 +24,7 @@ const Tasks = () => {
         <span>
             <FcCalendar size={30}/>
         </span>
-        <p className='text-sm text-white'>Due {changeDateFormat(task.date)}</p>
+        <p className='text-sm text-white'>Due {changeDateFormat!(task.date)}</p>
     </div>
     )
 
