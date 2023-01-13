@@ -142,6 +142,8 @@ const AppProvider: React.FC<Props> = ({ children }) => {
         setChecked,
         handleDelete,
         changeDateFormat,
+        reverseDate,
+        setTasks,
       }}
     >
       {children}
