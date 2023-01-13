@@ -7,13 +7,14 @@ import { AiOutlineHome, AiOutlineCloseCircle } from "react-icons/ai";
 import { MdOutlinePersonalInjury } from "react-icons/md";
 import { GrUserWorker } from "react-icons/gr";
 import { GiFinishLine } from "react-icons/gi";
+import { AppContextType } from '../@types/types';
 
 import {MdToday } from "react-icons/md";
 const Sidebar = () => {
-  const { sideBar, setSideBar, handleSideBar } = useGlobalContext() || {};
-  console.log(sideBar);
+  const { sideBar, setSideBar, handleSideBar } = useGlobalContext() as AppContextType;
+  //console.log(sideBar);
   const handleSelectCategory=()=>{
-    setSideBar!(false)
+    setSideBar(false)
   }
   return (
     

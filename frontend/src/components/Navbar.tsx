@@ -1,8 +1,9 @@
 import { AiOutlineMenu } from "react-icons/ai";
 import { useGlobalContext } from "../context";
+import { AppContextType } from '../@types/types';
 
 const Navbar = () => {
- const {handleSideBar} = useGlobalContext() || {}
+ const {handleSideBar} = useGlobalContext() as AppContextType
 
   
   return (

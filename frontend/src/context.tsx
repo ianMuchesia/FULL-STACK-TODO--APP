@@ -1,36 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
-interface AppContextType {
-  handleSideBar: () => void;
-  sideBar: Boolean;
-  setSideBar: React.Dispatch<React.SetStateAction<boolean>>;
-  tasks?: Task[];
-  changeDateFormat: (myDate: Date) => string;
-  createTask: string;
-  setCreateTask: React.Dispatch<React.SetStateAction<string>>;
-  showModal: Boolean;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  selectCategory: String;
-  setSelectCategory: React.Dispatch<React.SetStateAction<string>>;
-  dueDate: String;
-  setDueDate: React.Dispatch<React.SetStateAction<string>>;
-  alert: {
-    error: string;
-    status: boolean;
-  };
-  setAlert: React.Dispatch<
-    React.SetStateAction<{
-      error: string;
-      status: boolean;
-    }>
-  >;
-  handleCreateTask: (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => Promise<void>;
-  checked: boolean;
-  setChecked: React.Dispatch<React.SetStateAction<boolean>>;
-  handleDelete:(id: string) => Promise<void>;
-}
+import { AppContextType, Task } from "./@types/types";
 
 const AppContext = React.createContext<AppContextType | undefined>(undefined);
 
@@ -38,12 +8,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-interface Task {
-  _id: string;
-  title: string;
-  description: string;
-  completed: boolean;
-}
+
 const AppProvider: React.FC<Props> = ({ children }) => {
   //sidebar toggle
   const [sideBar, setSideBar] = useState(false);
@@ -61,12 +26,13 @@ const AppProvider: React.FC<Props> = ({ children }) => {
       let isMounted = true;
       const fetchData = async () => {
         try {
-          const { data } = await axios.get<{ tasks: Task[] }>(
+          const { data } = await axios.get<{ tasks: [] }>(
             "http://localhost:3000/api/v1/tasks"
           );
   
           if (isMounted) {
-            setTasks(data.tasks);
+            setTasks(data.tasks)
+            console.log(data.tasks);
           }
         } catch (error) {
           console.log(error);
@@ -126,27 +92,32 @@ const AppProvider: React.FC<Props> = ({ children }) => {
 
   //deleteTask
   const handleDelete=async(id: string)=>{
+    console.log("here")
     try {
-      await axios.delete(`http://localhost:3000/api/v1/tasks/${id}`)
       const filteredOut = tasks.filter(task=>task._id!==id)
       setTasks(filteredOut)
+      await axios.delete(`http://localhost:3000/api/v1/tasks/${id}`)
+      
+      setRefresh(prevState=>!prevState)
     } catch (error) {
       console.log(error)
-    }
+    } 
   }
 
+  //edit Task
 
-  //to change date format
-  const changeDateFormat = (myDate: Date) => {
-    const date = new Date(myDate);
-    const year = date.getFullYear().toString().slice(-2);
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
-    const formattedDate = `${day}/${month}/${year}`;
-    return formattedDate;
-  };
+
 
   //checked and completed task
+    //to change date format
+    const changeDateFormat = (myDate: Date) => {
+      const date = new Date(myDate);
+      const year = date.getFullYear().toString().slice(-2);
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const day = date.getDate().toString().padStart(2, "0");
+      const formattedDate = `${day}/${month}/${year}`;
+      return formattedDate;
+    };
 
   const [checked, setChecked] = useState(false);
   return (
@@ -156,7 +127,6 @@ const AppProvider: React.FC<Props> = ({ children }) => {
         sideBar,
         setSideBar,
         tasks,
-        changeDateFormat,
         createTask,
         setCreateTask,
         showModal,
@@ -171,6 +141,7 @@ const AppProvider: React.FC<Props> = ({ children }) => {
         checked,
         setChecked,
         handleDelete,
+        changeDateFormat,
       }}
     >
       {children}
