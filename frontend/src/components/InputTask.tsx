@@ -1,8 +1,9 @@
 import React from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useGlobalContext } from "../context";
+import { AppContextType } from "../@types/types";
 const InputTask = () => {
-  const { setCreateTask,setShowModal, createTask }:any = useGlobalContext() || {};
+  const { setCreateTask,setShowModal, createTask } = useGlobalContext() as AppContextType;
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCreateTask(e.target.value);
   };

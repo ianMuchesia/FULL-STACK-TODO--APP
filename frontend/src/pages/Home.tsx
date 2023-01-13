@@ -5,9 +5,10 @@ import CompletedTasks from '../components/CompletedTasks'
 import Sidebar from '../components/Sidebar'
 import { useGlobalContext } from '../context'
 import Modal from '../components/Modal'
+import { AppContextType } from '../@types/types'
 
 const Home = () => {
-  const {showModal} = useGlobalContext() ||{}
+  const {showModal} = useGlobalContext() as AppContextType
 
   console.log(showModal)
   return (

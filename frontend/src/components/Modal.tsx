@@ -1,5 +1,6 @@
 import React from "react";
 import { useGlobalContext } from "../context";
+import { AppContextType } from "../@types/types";
 
 const Modal = () => {
   const {
@@ -10,7 +11,7 @@ const Modal = () => {
     alert,
     setAlert,
     handleCreateTask,
-  }: any = useGlobalContext();
+  }= useGlobalContext() as AppContextType
   //destructure optioned meal and rename the keys
   const handleSelectedCategory = (
     event: React.ChangeEvent<HTMLSelectElement>
