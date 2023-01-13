@@ -13,7 +13,7 @@ const Home = () => {
   console.log(showModal)
   return (
     <>
-    {/* <Sidebar/> */}
+    <Sidebar/>
     <InputTask/>
     {showModal && <Modal/>}
     <Tasks/>

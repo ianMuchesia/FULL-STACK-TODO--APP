@@ -29,11 +29,20 @@ export interface AppContextType {
     setChecked: React.Dispatch<React.SetStateAction<boolean>>;
     handleDelete:(id: string) => Promise<void>;
     changeDateFormat: (myDate: Date) => string;
+    reverseDate: (date: string) => string;
+    setTasks:  React.Dispatch<React.SetStateAction<Task[]>>;
   }
   export interface Task {
     _id: string;
     name: string;
-    date: Date;
+    date: unknown;
+    completed: boolean;
+    category:string;
+  }
+  export interface EditTask {
+    _id: string;
+    name: string;
+    date: string;
     completed: boolean;
     category:string;
   }
