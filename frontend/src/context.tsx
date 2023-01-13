@@ -104,6 +104,18 @@ const AppProvider: React.FC<Props> = ({ children }) => {
     } 
   }
 
+  //categorize tasks
+  const [category, setCategory]= useState<Task[]>([])
+  
+   const categorizeTasks =(selectedCategory: string)=>{
+     setCategory(tasks)
+     setSideBar(false)
+     const updatedCategory = tasks.filter(task=>task.category===selectedCategory)
+     setCategory(updatedCategory)
+ 
+   }
+
+  
   //edit Task
 
 
@@ -144,6 +156,8 @@ const AppProvider: React.FC<Props> = ({ children }) => {
         changeDateFormat,
         reverseDate,
         setTasks,
+        categorizeTasks,
+        category,
       }}
     >
       {children}

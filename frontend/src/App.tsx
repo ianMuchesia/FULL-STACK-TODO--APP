@@ -3,6 +3,7 @@ import Home from "./pages/Home"
 import Category from "./pages/Category"
 import Navbar from "./components/Navbar"
 import Edit from "./pages/Edit"
+import Sidebar from "./components/Sidebar"
 
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
   return (
     <BrowserRouter>
     <Navbar/>
+    <Sidebar/>
     <Routes>
       <Route path="/" element={<Home/>}/>
       <Route path="Category" element={<Category/>}/>

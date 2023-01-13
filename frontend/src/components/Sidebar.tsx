@@ -3,15 +3,14 @@ import { useGlobalContext } from "../context";
 
 import { Link } from "react-router-dom";
 import { FaRoad } from "react-icons/fa";
-import { AiOutlineHome, AiOutlineCloseCircle } from "react-icons/ai";
-import { MdOutlinePersonalInjury } from "react-icons/md";
-import { GrUserWorker } from "react-icons/gr";
-import { GiFinishLine } from "react-icons/gi";
+import { FcSportsMode, FcReading, FcPrivacy, FcShop , FcCollaboration} from "react-icons/fc";
+import {  AiOutlineCloseCircle } from "react-icons/ai";
+
 import { AppContextType } from '../@types/types';
 
 import {MdToday } from "react-icons/md";
 const Sidebar = () => {
-  const { sideBar, setSideBar, handleSideBar } = useGlobalContext() as AppContextType;
+  const { sideBar, setSideBar, handleSideBar, categorizeTasks } = useGlobalContext() as AppContextType;
   //console.log(sideBar);
   const handleSelectCategory=()=>{
     setSideBar(false)
@@ -26,36 +25,36 @@ const Sidebar = () => {
       <span onClick={handleSideBar}><AiOutlineCloseCircle size={40}  color={`white`}/></span>
       </div>
       <div className=" grid grid-cols-2 place-items-center">
-        <div onClick={handleSelectCategory}
+        <Link to="/" onClick={()=>{categorizeTasks('Home')}}
           className="flex items-center gap-2 categoryMorphism flex-col justify-center px-5 text-white py-4 m-4 h-32 w-28  ">
-          <span><AiOutlineHome size={60} color={`white`}/></span>
+          <span><FcShop size={60} color={`white`}/></span>
           Home
-        </div>
-        <div onClick={handleSelectCategory}
+        </Link>
+        <Link to="/Category" onClick={()=>{categorizeTasks('Exercise')}}
           className="flex items-center gap-2 categoryMorphism flex-col justify-center px-5 text-white py-4 m-4 h-32 w-28 ">
-          <span><MdToday size={60} color={`white`}/></span>
-          Today
-        </div>
-        <div onClick={handleSelectCategory}
+          <span><FcSportsMode size={60} color={`white`}/></span>
+          Exercise
+        </Link>
+        <Link to="/Category" onClick={()=>{categorizeTasks('Personal')}}
           className="flex items-center gap-2 categoryMorphism flex-col justify-center px-5 text-white py-4 m-4 h-32 w-28 ">
-          <span><MdOutlinePersonalInjury size={60} color={`white`}/></span>
+          <span><FcPrivacy size={60} color={`white`}/></span>
           Personal
-        </div>
-        <div onClick={handleSelectCategory}
+        </Link>
+        <Link to="/Category" onClick={()=>{categorizeTasks('Work')}}
           className="flex items-center gap-2 categoryMorphism flex-col justify-center px-5 text-white py-4 m-4 h-32 w-28 ">
-          <span><GrUserWorker size={60} color={`white`}/></span>
+          <span><FcCollaboration size={60} color={`white`}/></span>
           Work
-        </div>
-        <div onClick={handleSelectCategory}
+        </Link>
+        <Link to="/Category" onClick={()=>{categorizeTasks('RoadTrip')}}
           className="flex items-center gap-2 categoryMorphism flex-col justify-center px-5 text-white py-4 m-4 h-32 w-28 ">
           <span><FaRoad size={60} color={`white`}/></span>
           RoadTrip
-        </div>
-        <div onClick={handleSelectCategory}
+        </Link>
+        <Link to="/Category" onClick={()=>{categorizeTasks('Study')}}
           className="flex items-center gap-2 categoryMorphism flex-col justify-center px-5 text-white py-4 m-4 h-32 w-28 ">
-          <span><GiFinishLine size={60} color={`white`}/></span>
-          Completed
-        </div>
+          <span><FcReading size={60} color={`white`}/></span>
+          Study
+        </Link>
       </div>
       </div>
     

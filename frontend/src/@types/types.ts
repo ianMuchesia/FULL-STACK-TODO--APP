@@ -31,6 +31,8 @@ export interface AppContextType {
     changeDateFormat: (myDate: Date) => string;
     reverseDate: (date: string) => string;
     setTasks:  React.Dispatch<React.SetStateAction<Task[]>>;
+    categorizeTasks: (selectedCategory: string) => void;
+    category:Task[];
   }
   export interface Task {
     _id: string;
