@@ -76,7 +76,7 @@ const AppProvider: React.FC<Props> = ({ children }) => {
       return () => {
         isMounted = false;
       };
-    }, [tasks, refresh]);
+    }, [refresh]);
 
   //to create a task
   const [createTask, setCreateTask] = useState("");
